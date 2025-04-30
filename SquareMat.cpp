@@ -53,7 +53,7 @@ SquareMat::SquareMat(int size) {
         }
     }
     // Move constructor
-    SquareMat::SquareMat(SquareMat&& other) noexcept : size(other.size), matrix(other.matrix) {
+SquareMat::SquareMat(SquareMat&& other) noexcept : matrix(other.matrix), size(other.size) {
     // Take ownership of resources from other
     other.matrix = nullptr;
     other.size = 0;
