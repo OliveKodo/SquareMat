@@ -33,24 +33,25 @@ void printOperation(const string& op, const string& description) {
 
 int main() {
     try {
-        printHeader("SquareMat Class - Demonstration of Square Matrix Operations");
+        printHeader("SquareMat Class - Comprehensive Demonstration");
         
-        // Creating matrices
-        printSubHeader("Creating Basic Matrices");
-        cout << "Creating matrix A of size 3x3..." << endl;
-        SquareMat A(3);  // Empty 3x3 matrix
+        // 1. Creating matrices
+        printSubHeader("1. Creating and Initializing Matrices");
         
-        // Initialize matrix A with values
-        printOperation("Initializing Values", "Using [] operator to modify elements");
+        // Create empty matrix
+        printOperation("SquareMat A(3)", "Creating a 3x3 empty matrix");
+        SquareMat A(3);
+        cout << "Empty matrix A:" << endl << A << endl;
+        
+        // Initialize with values
+        printOperation("Setting values", "Using [] operator to modify elements");
         A[0][0] = 1; A[0][1] = 2; A[0][2] = 3;
         A[1][0] = 4; A[1][1] = 5; A[1][2] = 6;
         A[2][0] = 7; A[2][1] = 8; A[2][2] = 9;
+        cout << "Modified matrix A:" << endl << A << endl;
         
-        cout << "Matrix A:" << endl << A << endl;
-        
-        // Create matrix directly
-        printOperation("Matrix Construction", "Creating a matrix from an existing array");
-        cout << "Creating matrix B from a 2D array..." << endl;
+        // Create from 2D array
+        printOperation("Matrix from array", "Creating matrix from existing 2D array");
         double** dataB = new double*[3];
         for (int i = 0; i < 3; i++) {
             dataB[i] = new double[3];
@@ -60,160 +61,348 @@ int main() {
         dataB[2][0] = 3; dataB[2][1] = 2; dataB[2][2] = 1;
         
         SquareMat B(dataB, 3);
+        cout << "Matrix B:" << endl << B << endl;
         
-        // Free the original memory (B has a copy)
+        // Free original memory
         for (int i = 0; i < 3; i++) {
             delete[] dataB[i];
         }
         delete[] dataB;
         
-        cout << "Matrix B:" << endl << B << endl;
+        // Copy constructor demonstration
+        printOperation("Copy constructor", "SquareMat C(A)");
+        SquareMat C(A);
+        cout << "Matrix C (copy of A):" << endl << C << endl;
         
-        // Basic arithmetic operations
-        printSubHeader("Basic Arithmetic Operations");
+        // Assignment operator demonstration
+        printOperation("Assignment operator", "SquareMat D = B");
+        SquareMat D = B;
+        cout << "Matrix D (assigned from B):" << endl << D << endl;
         
-        printOperation("A + B", "Matrix addition (+ operator)");
-        cout << (A + B) << endl;
+        // 2. Basic arithmetic operations
+        printSubHeader("2. Basic Arithmetic Operations");
         
-        printOperation("A - B", "Matrix subtraction (- operator)");
-        cout << (A - B) << endl;
+        // Addition
+        printOperation("A + B", "Matrix addition");
+        SquareMat sum = A + B;
+        cout << sum << endl;
+        cout << "Sum of all elements: " << sum.sum() << endl;
         
-        printOperation("-A", "Unary minus (reversing sign of all elements)");
-        cout << (-A) << endl;
+        // Subtraction
+        printOperation("A - B", "Matrix subtraction");
+        SquareMat diff = A - B;
+        cout << diff << endl;
+        cout << "Sum of all elements: " << diff.sum() << endl;
         
+        // Unary minus
+        printOperation("-A", "Unary minus");
+        SquareMat negA = -A;
+        cout << negA << endl;
+        cout << "Sum of all elements: " << negA.sum() << endl;
+        
+        // 3. Matrix multiplication operations
+        printSubHeader("3. Matrix Multiplication Operations");
+        
+        // Matrix multiplication
         printOperation("A * B", "Matrix multiplication");
-        cout << (A * B) << endl;
+        SquareMat product = A * B;
+        cout << product << endl;
         
-        printOperation("A * 2", "Matrix multiplication with scalar (matrix * scalar)");
-        cout << (A * 2) << endl;
+        // Scalar multiplication (both ways)
+        printOperation("A * 3", "Matrix times scalar");
+        SquareMat scaled1 = A * 3;
+        cout << scaled1 << endl;
         
-        printOperation("2 * A", "Scalar multiplication with matrix (scalar * matrix)");
-        cout << (2 * A) << endl;
+        printOperation("3 * A", "Scalar times matrix");
+        SquareMat scaled2 = 3 * A;
+        cout << scaled2 << endl;
         
-        printOperation("A % B", "Element-wise multiplication between matrices");
-        cout << (A % B) << endl;
+        // Verify both results are the same
+        cout << "\nVerifying scalar multiplication equivalence:" << endl;
+        cout << "A*3 == 3*A: " << (scaled1 == scaled2) << endl;
         
+        // 4. Element-wise operations
+        printSubHeader("4. Element-wise Operations");
+        
+        // Element-wise multiplication
+        printOperation("A % B", "Element-wise multiplication");
+        SquareMat elemProduct = A % B;
+        cout << elemProduct << endl;
+        
+        // Modulo with scalar
         printOperation("A % 3", "Modulo with scalar");
-        cout << (A % 3) << endl;
+        SquareMat modResult = A % 3;
+        cout << modResult << endl;
         
-        printOperation("A / 2", "Matrix division by scalar");
-        cout << (A / 2) << endl;
+        // Division by scalar
+        printOperation("A / 2", "Division by scalar");
+        SquareMat divResult = A / 2;
+        cout << divResult << endl;
         
-        // Power operations
-        printSubHeader("Power Operations");
+        // 5. Power operations
+        printSubHeader("5. Power Operations");
         
-        printOperation("A^2", "Matrix squared (self-multiplication)");
-        cout << (A ^ 2) << endl;
+        // Various powers
+        printOperation("A^0", "Identity matrix");
+        SquareMat power0 = A ^ 0;
+        cout << power0 << endl;
         
-        printOperation("A^0", "Power of 0 (identity matrix)");
-        cout << (A ^ 0) << endl;
+        printOperation("A^1", "Matrix to power 1");
+        SquareMat power1 = A ^ 1;
+        cout << power1 << endl;
         
-        // Exception demonstration
-        printOperation("A^(-1)", "Attempt to raise to negative power (should throw exception)");
-        try {
-            SquareMat invA = A ^ (-1);
-            cout << invA << endl;
-        } catch (const std::invalid_argument& e) {
-            cout << "Exception caught as expected: " << e.what() << endl;
-        }
+        printOperation("A^2", "Matrix squared");
+        SquareMat power2 = A ^ 2;
+        cout << power2 << endl;
         
-        // Increment/Decrement
-        printSubHeader("Increment and Decrement Operators");
+        printOperation("A^3", "Matrix cubed");
+        SquareMat power3 = A ^ 3;
+        cout << power3 << endl;
         
-        SquareMat C = A;
-        cout << "Matrix C = A:" << endl << C << endl;
+        // 6. Increment/Decrement operators
+        printSubHeader("6. Increment and Decrement Operators");
         
-        printOperation("++C", "Pre-increment");
-        cout << (++C) << endl;
+        SquareMat E = A;
         
-        printOperation("C++", "Post-increment");
-        cout << "Return value: " << endl << (C++) << endl;
-        cout << "After operation, C: " << endl << C << endl;
+        // Pre-increment
+        printOperation("++E", "Pre-increment");
+        cout << "Before: " << E.sum() << endl;
+        SquareMat result1 = ++E;
+        cout << "Result: " << endl << result1 << endl;
+        cout << "E after: " << endl << E << endl;
+        cout << "Sum after: " << E.sum() << endl;
         
-        printOperation("--C", "Pre-decrement");
-        cout << (--C) << endl;
+        // Post-increment
+        printOperation("E++", "Post-increment");
+        cout << "Before: " << E.sum() << endl;
+        SquareMat result2 = E++;
+        cout << "Result: " << endl << result2 << endl;
+        cout << "E after: " << endl << E << endl;
+        cout << "Sum after: " << E.sum() << endl;
         
-        printOperation("C--", "Post-decrement");
-        cout << "Return value: " << endl << (C--) << endl;
-        cout << "After operation, C: " << endl << C << endl;
+        // Pre-decrement
+        printOperation("--E", "Pre-decrement");
+        cout << "Before: " << E.sum() << endl;
+        SquareMat result3 = --E;
+        cout << "Result: " << endl << result3 << endl;
+        cout << "E after: " << endl << E << endl;
+        cout << "Sum after: " << E.sum() << endl;
+        
+        // Post-decrement
+        printOperation("E--", "Post-decrement");
+        cout << "Before: " << E.sum() << endl;
+        SquareMat result4 = E--;
+        cout << "Result: " << endl << result4 << endl;
+        cout << "E after: " << endl << E << endl;
+        cout << "Sum after: " << E.sum() << endl;
+        
+        // 7. Matrix transformations
+        printSubHeader("7. Matrix Transformations");
         
         // Transpose
-        printSubHeader("Transpose and Matrix Operations");
+        printOperation("~A", "Transpose");
+        SquareMat transposeA = ~A;
+        cout << "A:" << endl << A << endl;
+        cout << "~A:" << endl << transposeA << endl;
         
-        printOperation("~A", "Transpose of matrix A");
-        cout << (~A) << endl;
+        // Double transpose verification
+        printOperation("~(~A)", "Double transpose (should equal A)");
+        SquareMat doubleTranspose = ~transposeA;
+        cout << "~(~A):" << endl << doubleTranspose << endl;
+        cout << "A == ~(~A): " << (A == doubleTranspose) << endl;
         
-        // Comparison operators
-        printSubHeader("Comparison Operators");
+        // 8. Comparison operators
+        printSubHeader("8. Comparison Operators");
         
-        printOperation("A == B", "Equality (based on sum of elements): " + to_string(A == B));
-        printOperation("A != B", "Inequality: " + to_string(A != B));
-        printOperation("A < B", "Less than: " + to_string(A < B));
-        printOperation("A > B", "Greater than: " + to_string(A > B));
-        printOperation("A <= B", "Less than or equal: " + to_string(A <= B));
-        printOperation("A >= B", "Greater than or equal: " + to_string(A >= B));
+        // Create matrices with specific sums
+        SquareMat F(2);
+        F[0][0] = 1; F[0][1] = 2;
+        F[1][0] = 3; F[1][1] = 4;  // Sum = 10
         
-        // Determinant
-        printSubHeader("Determinant");
+        SquareMat G(2);
+        G[0][0] = 2; G[0][1] = 3;
+        G[1][0] = 4; G[1][1] = 5;  // Sum = 14
         
-        printOperation("!A", "Calculating determinant of A: " + to_string(!A));
+        cout << "F:" << endl << F << endl;
+        cout << "G:" << endl << G << endl;
+        cout << "F sum: " << F.sum() << endl;
+        cout << "G sum: " << G.sum() << endl;
         
-        // Compound assignment operators
-        printSubHeader("Compound Assignment Operators");
+        printOperation("All comparisons", "Testing all comparison operators");
+        cout << "F == G: " << (F == G) << endl;
+        cout << "F != G: " << (F != G) << endl;
+        cout << "F < G:  " << (F < G) << endl;
+        cout << "F > G:  " << (F > G) << endl;
+        cout << "F <= G: " << (F <= G) << endl;
+        cout << "F >= G: " << (F >= G) << endl;
         
-        SquareMat D = A;
-        cout << "Matrix D = A:" << endl << D << endl;
+        // 9. Determinant calculations
+        printSubHeader("9. Determinant Calculations");
         
-        printOperation("D += B", "Addition and assignment");
-        D += B;
-        cout << D << endl;
+        // Determinant examples
+        printOperation("!A", "Determinant of A");
+        cout << "A:" << endl << A << endl;
+        cout << "Determinant: " << !A << endl;
         
-        printOperation("D -= B", "Subtraction and assignment");
-        D -= B;
-        cout << D << endl;
+        // Create invertible matrix
+        SquareMat H(2);
+        H[0][0] = 1; H[0][1] = 2;
+        H[1][0] = 3; H[1][1] = 5;  // Determinant = 1*5 - 2*3 = -1
+        cout << "\nH:" << endl << H << endl;
+        cout << "Determinant: " << !H << endl;
         
-        printOperation("D *= 2", "Scalar multiplication and assignment");
-        D *= 2;
-        cout << D << endl;
+        // Singular matrix
+        SquareMat I(2);
+        I[0][0] = 1; I[0][1] = 2;
+        I[1][0] = 2; I[1][1] = 4;  // Determinant = 0 (singular)
+        cout << "\nI:" << endl << I << endl;
+        cout << "Determinant: " << !I << endl;
         
-        printOperation("D /= 2", "Scalar division and assignment");
-        D /= 2;
-        cout << D << endl;
+        // 10. Compound assignment operators
+        printSubHeader("10. Compound Assignment Operators");
         
-        printOperation("D %= 3", "Modulo with scalar and assignment");
-        D %= 3;
-        cout << D << endl;
+        SquareMat J = A;
         
-        printOperation("D %= B", "Element-wise multiplication and assignment");
-        D %= B;
-        cout << D << endl;
+        printOperation("J = A", "Initial state");
+        cout << J << endl;
+        cout << "Sum: " << J.sum() << endl;
         
-        printOperation("D *= B", "Matrix multiplication and assignment");
-        D *= B;
-        cout << D << endl;
-
-        // Error handling
-        printSubHeader("Error Handling");
+        printOperation("J += B", "Add B to J");
+        J += B;
+        cout << J << endl;
+        cout << "Sum: " << J.sum() << endl;
         
-        printOperation("SquareMat(0)", "Attempt to create a matrix of size 0");
+        printOperation("J -= B", "Subtract B from J");
+        J -= B;
+        cout << J << endl;
+        cout << "Sum: " << J.sum() << endl;
+        
+        printOperation("J *= 2", "Multiply J by 2");
+        J *= 2;
+        cout << J << endl;
+        cout << "Sum: " << J.sum() << endl;
+        
+        printOperation("J /= 2", "Divide J by 2");
+        J /= 2;
+        cout << J << endl;
+        cout << "Sum: " << J.sum() << endl;
+        
+        printOperation("J %= 3", "J modulo 3");
+        J %= 3;
+        cout << J << endl;
+        cout << "Sum: " << J.sum() << endl;
+        
+        printOperation("J %= B", "Element-wise product with B");
+        J %= B;
+        cout << J << endl;
+        cout << "Sum: " << J.sum() << endl;
+        
+        printOperation("J *= A", "Matrix multiply by A");
+        J *= A;
+        cout << J << endl;
+        cout << "Sum: " << J.sum() << endl;
+        
+        // 11. Error handling
+        printSubHeader("11. Error Handling");
+        
+        // Invalid size
+        printOperation("SquareMat(0)", "Invalid size 0");
         try {
             SquareMat invalid(0);
         } catch (const std::invalid_argument& e) {
-            cout << "Exception caught as expected: " << e.what() << endl;
+            cout << "Exception: " << e.what() << endl;
         }
         
-        printOperation("A / 0", "Attempt to divide by zero");
+        printOperation("SquareMat(-5)", "Invalid size -5");
+        try {
+            SquareMat invalid(-5);
+        } catch (const std::invalid_argument& e) {
+            cout << "Exception: " << e.what() << endl;
+        }
+        
+        // Division by zero
+        printOperation("A / 0", "Division by zero");
         try {
             SquareMat zero = A / 0;
         } catch (const std::invalid_argument& e) {
-            cout << "Exception caught as expected: " << e.what() << endl;
+            cout << "Exception: " << e.what() << endl;
         }
         
-        // Summary
-        printHeader("Summary and Recommendations");
-        cout << "All operators of the SquareMat class work as expected." << endl;
-        cout << "This square matrix class provides full functionality for matrix calculations." << endl;
-        cout << "Main applications: linear algebra, computer graphics, neural networks, and more." << endl;
+        // Modulo by zero
+        printOperation("A % 0", "Modulo by zero");
+        try {
+            SquareMat zero = A % 0;
+        } catch (const std::invalid_argument& e) {
+            cout << "Exception: " << e.what() << endl;
+        }
+        
+        // Compound assignment with incompatible sizes
+        printOperation("Size mismatch", "3x3 += 2x2");
+        try {
+            A += F;  // F is 2x2, A is 3x3
+        } catch (const std::invalid_argument& e) {
+            cout << "Exception: " << e.what() << endl;
+        }
+        
+        // Invalid array index
+        printOperation("A[10][0]", "Out of bounds access");
+        try {
+            double value = A[10][0];
+            cout << value << endl;  // Won't be reached
+        } catch (const std::out_of_range& e) {
+            cout << "Exception: " << e.what() << endl;
+        }
+        
+        // 12. Large matrix operations
+        printSubHeader("12. Large Matrix Operations");
+        
+        cout << "Testing with larger matrices..." << endl;
+        
+        // Create larger matrices
+        SquareMat large1(5);
+        SquareMat large2(5);
+        
+        // Fill with test data
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                large1[i][j] = i + j + 1;
+                large2[i][j] = (i + 1) * (j + 1);
+            }
+        }
+        
+        // Test operations with large matrices
+        SquareMat largeProduct = large1 * large2;
+        cout << "5x5 matrix multiplication completed" << endl;
+        cout << "Result determinant: " << !largeProduct << endl;
+        
+        // 13. Practical examples
+        printSubHeader("13. Practical Application Examples");
+        
+        // Example: Transformation matrix
+        printOperation("2D Rotation", "Creating a 90-degree rotation matrix");
+        SquareMat rotation(2);
+        rotation[0][0] = 0;  rotation[0][1] = -1;
+        rotation[1][0] = 1;  rotation[1][1] = 0;
+        cout << "Rotation matrix:" << endl << rotation << endl;
+        
+        // Example: Vector transformation
+        SquareMat point(2);
+        point[0][0] = 1; point[0][1] = 0;
+        point[1][0] = 0; point[1][1] = 1;
+        cout << "Original point matrix:" << endl << point << endl;
+        
+        SquareMat rotated = rotation * point;
+        cout << "Rotated point:" << endl << rotated << endl;
+        
+        // Example: Scaling matrix
+        printOperation("Scaling", "Creating a scaling matrix");
+        SquareMat scaling(2);
+        scaling[0][0] = 2; scaling[0][1] = 0;
+        scaling[1][0] = 0; scaling[1][1] = 2;
+        cout << "Scaling matrix:" << endl << scaling << endl;
+        
+        SquareMat scaled = scaling * point;
+        cout << "Scaled point:" << endl << scaled << endl;
         
     } catch (const exception& e) {
         cerr << "Error: " << e.what() << endl;
