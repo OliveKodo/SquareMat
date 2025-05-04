@@ -1,6 +1,4 @@
-# Makefile for SquareMat project
-# your_email@example.com
-
+#tomergal40@gmail.com
 CXX = g++
 CXXFLAGS = -std=c++11 -Wall -Wextra -pedantic
 LDFLAGS =
