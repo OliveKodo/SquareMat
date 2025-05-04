@@ -1,13 +1,12 @@
 # SquareMat – ספרייה למטריצות ריבועיות
 
 ## הפרויקט כולל:
-- **SquareMat.hpp** – כל ההגדרות של המחלקה והאופרטורים  
-- **SquareMat_memory.cpp** – בנאים, העתקות וניהול זיכרון  
-- **SquareMat_operators.cpp** – כל הפעולות עצמן (כפל, חיבור וכו')  
-- **Main.cpp** – דוגמה לשימוש במטריצה  
-- **Test.cpp** – בדיקות לבדוק שהכול עובד כמו שצריך  
-- **Makefile** – מאפשר לבנות ולהריץ הכל בקלות  
-
+- **SquareMat.hpp** – קובץ h  
+- **SquareMat_memory.cpp** – מימוש של מטריצה וניהול הזיכרון  
+- **SquareMat_operators.cpp** – הפעולות על המטריצה  
+- **Main.cpp** – קובץ דוגמה  
+- **Test.cpp** – קובץ בדיקות  
+- **Makefile** – makefile
 ## איך מריצים?
 - קובץ דוגמה: `make Main`  
 - קובץ בדיקות: `make test`  
